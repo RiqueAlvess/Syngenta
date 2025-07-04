@@ -17,15 +17,10 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-interface ChartDataItem {
-  mes: string;
-  [key: string]: string | number;
-}
-
 interface ChartAreaGradientProps {
   title: string;
   description: string;
-  data: ChartDataItem[];
+  data: Array<any>;
   dataKeys: string[];
   colors: string[];
   footerText?: string;
