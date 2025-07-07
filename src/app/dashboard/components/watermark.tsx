@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 interface WatermarkProps {
   className?: string;
   size?: "sm" | "md" | "lg";
@@ -27,13 +25,10 @@ export function Watermark({
     <div 
       className={`absolute z-0 opacity-5 pointer-events-none ${positionClasses[position]} ${className}`}
     >
-      <Image
-        src="/empresa.png"
+      <img
+        src="https://static.wixstatic.com/media/e27d1b_a492a674f1754441ae30423b5c682bef~mv2.png/v1/fill/w_249,h_136,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/e27d1b_a492a674f1754441ae30423b5c682bef~mv2.png"
         alt=""
-        width={80}
-        height={80}
         className={`${sizeClasses[size]} object-contain filter grayscale`}
-        priority={false}
       />
     </div>
   );
