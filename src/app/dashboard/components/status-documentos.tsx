@@ -1,19 +1,13 @@
 "use client";
 
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
   FileText,
   CheckCircle,
   AlertTriangle,
   XCircle,
   Clock,
 } from "lucide-react";
+import { Watermark } from "@/components/ui/watermark";
 
 const statusData = [
   {
@@ -48,37 +42,44 @@ const statusData = [
 
 export function StatusDocumentos() {
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex items-center gap-2">
-          <FileText className="h-5 w-5" />
-          <CardTitle>Status dos Documentos</CardTitle>
+    <div className="bg-white rounded-xl border shadow-sm relative overflow-hidden">
+      <Watermark />
+      
+      <div className="relative z-10 flex flex-col gap-6 p-6">
+        {/* Header */}
+        <div>
+          <div className="flex items-center gap-2">
+            <FileText className="h-5 w-5" />
+            <h3 className="leading-none font-semibold">Status dos Documentos</h3>
+          </div>
+          <p className="text-muted-foreground text-sm">
+            Situação atual dos documentos por categoria
+          </p>
         </div>
-        <CardDescription>
-          Situação atual dos documentos por categoria
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        {statusData.map((item) => {
-          const Icon = item.icon;
-          return (
-            <div
-              key={item.label}
-              className="flex items-center justify-between p-3 rounded-lg border"
-            >
-              <div className="flex items-center gap-3">
-                <div className={`p-2 rounded-full ${item.bgColor}`}>
-                  <Icon className={`h-4 w-4 ${item.color}`} />
+
+        {/* Content */}
+        <div className="space-y-3">
+          {statusData.map((item) => {
+            const Icon = item.icon;
+            return (
+              <div
+                key={item.label}
+                className="flex items-center justify-between p-3 rounded-lg border"
+              >
+                <div className="flex items-center gap-3">
+                  <div className={`p-2 rounded-full ${item.bgColor}`}>
+                    <Icon className={`h-4 w-4 ${item.color}`} />
+                  </div>
+                  <span className="font-medium text-sm">{item.label}</span>
                 </div>
-                <span className="font-medium text-sm">{item.label}</span>
+                <span className="text-2xl font-bold text-gray-900">
+                  {item.value}
+                </span>
               </div>
-              <span className="text-2xl font-bold text-gray-900">
-                {item.value}
-              </span>
-            </div>
-          );
-        })}
-      </CardContent>
-    </Card>
+            );
+          })}
+        </div>
+      </div>
+    </div>
   );
 }
