@@ -1,13 +1,7 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Shield } from "lucide-react";
+import { Watermark } from "@/components/ui/watermark";
 
 const asosData = [
   {
@@ -42,33 +36,41 @@ const asosData = [
 
 export function AsosCards() {
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex items-center gap-2">
-          <Shield className="h-5 w-5" />
-          <CardTitle>ASOS - Atestados de Saúde Ocupacional</CardTitle>
+    <div className="bg-white rounded-xl border shadow-sm relative overflow-hidden">
+      <Watermark />
+      
+      <div className="relative z-10 flex flex-col gap-6 p-6">
+        {/* Header */}
+        <div>
+          <div className="flex items-center gap-2">
+            <Shield className="h-5 w-5" />
+            <h3 className="leading-none font-semibold">ASOS - Atestados de Saúde Ocupacional</h3>
+          </div>
+          <p className="text-muted-foreground text-sm">
+            Controle de atestados pendentes, vencendo e vencidos
+          </p>
         </div>
-        <CardDescription>
-          Controle de atestados pendentes, vencendo e vencidos
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
+
+        {/* Content */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {asosData.map((item) => (
             <div
               key={item.label}
-              className={`p-6 rounded-lg border ${item.bgColor} text-center`}
+              className={`p-6 rounded-lg border ${item.bgColor} text-center relative overflow-hidden`}
             >
-              <div className={`text-3xl font-bold ${item.valueColor} mb-2`}>
-                {item.value}
-              </div>
-              <div className={`text-sm font-medium ${item.textColor}`}>
-                {item.label}
+              <Watermark size="sm" className="opacity-10" />
+              <div className="relative z-10">
+                <div className={`text-3xl font-bold ${item.valueColor} mb-2`}>
+                  {item.value}
+                </div>
+                <div className={`text-sm font-medium ${item.textColor}`}>
+                  {item.label}
+                </div>
               </div>
             </div>
           ))}
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
