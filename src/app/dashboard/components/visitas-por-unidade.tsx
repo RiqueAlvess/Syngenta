@@ -3,20 +3,23 @@
 import { Building2 } from "lucide-react";
 import { Watermark } from "@/components/ui/watermark";
 
-const visitasData = [
-  { unidade: "SYNGENTA CROP", realizadas: 45, pendentes: 3 },
-  { unidade: "SYNGENTA SEEDS-R&D", realizadas: 38, pendentes: 5 },
-  { unidade: "SYNGENTA SEEDS", realizadas: 32, pendentes: 2 },
-  { unidade: "SYNGENTA DIGITAL", realizadas: 27, pendentes: 4 },
-];
+interface VisitasPorUnidadeProps {
+  data: any;
+}
 
-export function VisitasPorUnidade() {
+export function VisitasPorUnidade({ data }: VisitasPorUnidadeProps) {
+  const visitasData = data.indicadores.seguranca.visitas.porUnidade.map((item: any) => ({
+    unidade: item.nomeUnidade,
+    realizadas: item.realizadas,
+    pendentes: item.pendentes
+  }));
+
   const totalRealizadas = visitasData.reduce(
-    (acc, item) => acc + item.realizadas,
+    (acc: number, item: any) => acc + item.realizadas,
     0
   );
   const totalPendentes = visitasData.reduce(
-    (acc, item) => acc + item.pendentes,
+    (acc: number, item: any) => acc + item.pendentes,
     0
   );
 
@@ -39,7 +42,7 @@ export function VisitasPorUnidade() {
 
         {/* Content */}
         <div className="space-y-4">
-          {visitasData.map((item) => {
+          {visitasData.map((item: any) => {
             const percentualExecucao = (
               (item.realizadas / (item.realizadas + item.pendentes)) *
               100
