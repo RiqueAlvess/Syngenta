@@ -17,36 +17,44 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-const medicoesData = [
-  { unidade: "CROP", solicitadas: 25, realizadas: 23, percentual: 92 },
-  { unidade: "SEEDS-R&D", solicitadas: 18, realizadas: 17, percentual: 94.4 },
-  { unidade: "SEEDS", solicitadas: 22, realizadas: 20, percentual: 90.9 },
-  { unidade: "DIGITAL", solicitadas: 20, realizadas: 16, percentual: 80 },
-];
-
-const tiposMedicoes = [
-  { tipo: "Ruído Ocupacional", realizadas: 32, total: 35 },
-  { tipo: "Agentes Químicos", realizadas: 28, total: 30 },
-  { tipo: "Temperatura/Calor", realizadas: 16, total: 20 },
-];
+interface MedicoesCardProps {
+  data: any;
+}
 
 const chartConfig = {
   solicitadas: { label: "Solicitadas", color: "#94a3b8" },
   realizadas: { label: "Realizadas", color: "#22c55e" },
 } satisfies ChartConfig;
 
-export function MedicoesCard() {
+export function MedicoesCard({ data }: MedicoesCardProps) {
+  // Simular dados de medições baseado nos dados de documentos por unidade
+  const medicoesData = data.indicadores.seguranca.documentos.porUnidade.map((item: any) => {
+    const solicitadas = Math.round(item.validos * 0.3); // Simula solicitações baseado nos documentos válidos
+    const realizadas = Math.round(solicitadas * 0.9); // 90% de execução
+    return {
+      unidade: item.nomeUnidade.split(' ')[1] || item.nomeUnidade,
+      solicitadas,
+      realizadas,
+      percentual: ((realizadas / solicitadas) * 100).toFixed(1)
+    };
+  });
+
+  // Simular tipos de medições
+  const tiposMedicoes = [
+    { tipo: "Ruído Ocupacional", realizadas: 32, total: 35 },
+    { tipo: "Agentes Químicos", realizadas: 28, total: 30 },
+    { tipo: "Temperatura/Calor", realizadas: 16, total: 20 },
+  ];
+
   const totalSolicitadas = medicoesData.reduce(
-    (acc, item) => acc + item.solicitadas,
+    (acc: number, item: any) => acc + item.solicitadas,
     0
   );
   const totalRealizadas = medicoesData.reduce(
-    (acc, item) => acc + item.realizadas,
+    (acc: number, item: any) => acc + item.realizadas,
     0
   );
-  const percentualGeral = ((totalRealizadas / totalSolicitadas) * 100).toFixed(
-    1
-  );
+  const percentualGeral = ((totalRealizadas / totalSolicitadas) * 100).toFixed(1);
 
   return (
     <Card>
@@ -112,9 +120,7 @@ export function MedicoesCard() {
           <h4 className="text-sm font-medium mb-3">Por Tipo de Medição</h4>
           <div className="space-y-3">
             {tiposMedicoes.map((item) => {
-              const percentual = ((item.realizadas / item.total) * 100).toFixed(
-                1
-              );
+              const percentual = ((item.realizadas / item.total) * 100).toFixed(1);
               return (
                 <div
                   key={item.tipo}
@@ -148,7 +154,7 @@ export function MedicoesCard() {
           +5.2% em relação ao mês anterior <TrendingUp className="h-4 w-4" />
         </div>
         <div className="text-muted-foreground leading-none">
-          Meta: ≥ 90% das medições solicitadas realizadas
+          Meta: ≥ {data.indicadores.seguranca.kpis.medicoesRealizadas.meta}% das medições solicitadas realizadas
         </div>
       </CardFooter>
     </Card>
