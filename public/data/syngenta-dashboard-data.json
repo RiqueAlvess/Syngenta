@@ -1,0 +1,237 @@
+{
+  "metadata": {
+    "ultimaAtualizacao": "2025-07-21T10:00:00Z",
+    "versao": "2.0",
+    "fontesDados": [
+      "Visitas Médicas Dr. Antonio 2025.xlsx",
+      "Taxa Absenteismo.xlsx",
+      "Perfil Epidemiológico 2025.xlsx",
+      "Exames Alterados 2025.xlsx",
+      "Controle Documentos.xlsx",
+      "Consultas Técnicas.xlsx",
+      "ASO Válidos.xlsx",
+      "Absenteísmo por Doença.xlsx",
+      "Absenteísmo 2025.xlsx"
+    ]
+  },
+  "filtros": {
+    "subgrupos": ["todos", "seguranca", "saude"],
+    "unidades": [
+      { "codigo": "todas", "nome": "Todas as unidades" },
+      { "codigo": "crop", "nome": "SYNGENTA CROP" },
+      { "codigo": "seeds-rd", "nome": "SYNGENTA SEEDS-R&D" },
+      { "codigo": "seeds", "nome": "SYNGENTA SEEDS" },
+      { "codigo": "digital", "nome": "SYNGENTA DIGITAL" }
+    ],
+    "periodos": ["7", "30", "90"]
+  },
+  "indicadores": {
+    "seguranca": {
+      "kpis": {
+        "visitasRealizadas": {
+          "fonte": "Visitas Médicas Dr. Antonio 2025.xlsx",
+          "valor": 142,
+          "pendentes": 14,
+          "variacao": "+12%",
+          "periodo": "30",
+          "meta": null,
+          "unidade": "visitas"
+        },
+        "documentosValidos": {
+          "fonte": "Controle Documentos.xlsx",
+          "valor": 234,
+          "vencendoEm30Dias": 18,
+          "vencidos": 7,
+          "periodo": "30",
+          "meta": null,
+          "unidade": "documentos"
+        },
+        "pppEmitidos": {
+          "fonte": "Controle Documentos.xlsx",
+          "valor": 156,
+          "solicitacoesPendentes": 23,
+          "periodo": "30",
+          "meta": null,
+          "unidade": "documentos"
+        },
+        "medicoesRealizadas": {
+          "fonte": "Controle Documentos.xlsx",
+          "valor": 89,
+          "unidade": "%",
+          "realizadas": 76,
+          "total": 85,
+          "periodo": "30",
+          "meta": 90
+        }
+      },
+      "visitas": {
+        "fonte": "Visitas Médicas Dr. Antonio 2025.xlsx",
+        "evolucaoMensal": [
+          { "mes": "Janeiro", "visitas": 32, "meta": 38, "periodo": "30" },
+          { "mes": "Fevereiro", "visitas": 35, "meta": 38, "periodo": "30" },
+          { "mes": "Março", "visitas": 39, "meta": 38, "periodo": "30" },
+          { "mes": "Abril", "visitas": 42, "meta": 38, "periodo": "30" },
+          { "mes": "Maio", "visitas": 38, "meta": 38, "periodo": "30" },
+          { "mes": "Junho", "visitas": 42, "meta": 38, "periodo": "30" },
+          { "mes": "Julho", "visitas": 45, "meta": 38, "periodo": "30" }
+        ],
+        "porUnidade": [
+          { "unidade": "crop", "nomeUnidade": "SYNGENTA CROP", "realizadas": 45, "pendentes": 3, "periodo": "30" },
+          { "unidade": "seeds-rd", "nomeUnidade": "SYNGENTA SEEDS-R&D", "realizadas": 38, "pendentes": 5, "periodo": "30" },
+          { "unidade": "seeds", "nomeUnidade": "SYNGENTA SEEDS", "realizadas": 32, "pendentes": 2, "periodo": "30" },
+          { "unidade": "digital", "nomeUnidade": "SYNGENTA DIGITAL", "realizadas": 27, "pendentes": 4, "periodo": "30" }
+        ]
+      },
+      "documentos": {
+        "fonte": "Controle Documentos.xlsx",
+        "tipos": ["PGR", "LTCAT", "PPR", "L.I", "L.P", "PCMSO", "R.A"],
+        "porUnidade": [
+          { "unidade": "crop", "nomeUnidade": "CROP", "validos": 89, "vencendo": 8, "vencidos": 3, "periodo": "30" },
+          { "unidade": "seeds-rd", "nomeUnidade": "SEEDS-R&D", "validos": 65, "vencendo": 6, "vencidos": 2, "periodo": "30" },
+          { "unidade": "seeds", "nomeUnidade": "SEEDS", "validos": 78, "vencendo": 5, "vencidos": 2, "periodo": "30" },
+          { "unidade": "digital", "nomeUnidade": "DIGITAL", "validos": 45, "vencendo": 4, "vencidos": 1, "periodo": "30" }
+        ],
+        "statusGeral": [
+          { "status": "validos", "label": "Documentos Válidos", "valor": 234, "icone": "CheckCircle", "cor": "text-green-600", "fundo": "bg-green-50" },
+          { "status": "vencendo", "label": "Vencendo (30 dias)", "valor": 18, "icone": "AlertTriangle", "cor": "text-yellow-600", "fundo": "bg-yellow-50" },
+          { "status": "vencidos", "label": "Vencidos", "valor": 7, "icone": "XCircle", "cor": "text-red-600", "fundo": "bg-red-50" },
+          { "status": "pendentes", "label": "Pendentes de Entrega", "valor": 43, "icone": "Clock", "cor": "text-blue-600", "fundo": "bg-blue-50" }
+        ]
+      },
+      "conformidade": {
+        "percentualGeral": 92.5,
+        "meta": 90,
+        "detalhes": [
+          { "categoria": "Conforme", "valor": 92.5, "cor": "#22c55e" },
+          { "categoria": "Não Conforme", "valor": 7.5, "cor": "#ef4444" }
+        ]
+      }
+    },
+    "saude": {
+      "kpis": {
+        "asoValidos": {
+          "fonte": "ASO Válidos.xlsx",
+          "valor": 312,
+          "vencendoEm30Dias": 28,
+          "vencidos": 8,
+          "periodo": "30",
+          "meta": null,
+          "unidade": "asos"
+        },
+        "examesAlterados": {
+          "fonte": "Exames Alterados 2025.xlsx",
+          "valor": 9,
+          "unidade": "%",
+          "alterados": 28,
+          "total": 312,
+          "periodo": "30",
+          "meta": 10
+        },
+        "taxaAbsenteismo": {
+          "fonte": "Taxa Absenteismo.xlsx",
+          "valor": 3.2,
+          "unidade": "%",
+          "variacao": "-0.5%",
+          "periodo": "30",
+          "meta": 4
+        },
+        "consultasTecnicas": {
+          "fonte": "Consultas Técnicas.xlsx",
+          "valor": 58,
+          "pendentes": 9,
+          "periodo": "30",
+          "meta": null,
+          "unidade": "consultas"
+        }
+      },
+      "asos": {
+        "fonte": "ASO Válidos.xlsx",
+        "resumo": [
+          { "status": "validos", "label": "Válidos", "valor": 156, "cor": "text-green-600", "fundo": "bg-green-50" },
+          { "status": "pendentes", "label": "Pendentes", "valor": 15, "cor": "text-blue-600", "fundo": "bg-blue-50" },
+          { "status": "vencendo", "label": "Vencendo (30 dias)", "valor": 23, "cor": "text-yellow-600", "fundo": "bg-yellow-50" },
+          { "status": "vencidos", "label": "Vencidos", "valor": 8, "cor": "text-red-600", "fundo": "bg-red-50" }
+        ]
+      },
+      "exames": {
+        "fonte": "Exames Alterados 2025.xlsx",
+        "porUnidade": [
+          { "unidade": "crop", "nomeUnidade": "CROP", "normais": 78, "alterados": 7, "total": 85, "periodo": "30" },
+          { "unidade": "seeds-rd", "nomeUnidade": "SEEDS-R&D", "normais": 65, "alterados": 5, "total": 70, "periodo": "30" },
+          { "unidade": "seeds", "nomeUnidade": "SEEDS", "normais": 82, "alterados": 8, "total": 90, "periodo": "30" },
+          { "unidade": "digital", "nomeUnidade": "DIGITAL", "normais": 59, "alterados": 8, "total": 67, "periodo": "30" }
+        ]
+      },
+      "absenteismo": {
+        "fonte": "Absenteísmo 2025.xlsx",
+        "evolucaoMensal": [
+          { "mes": "Janeiro", "taxa": 4.2, "meta": 4.0, "periodo": "30" },
+          { "mes": "Fevereiro", "taxa": 3.8, "meta": 4.0, "periodo": "30" },
+          { "mes": "Março", "taxa": 3.5, "meta": 4.0, "periodo": "30" },
+          { "mes": "Abril", "taxa": 3.9, "meta": 4.0, "periodo": "30" },
+          { "mes": "Maio", "taxa": 3.1, "meta": 4.0, "periodo": "30" },
+          { "mes": "Junho", "taxa": 3.2, "meta": 4.0, "periodo": "30" },
+          { "mes": "Julho", "taxa": 3.0, "meta": 4.0, "periodo": "30" }
+        ],
+        "porUnidade": [
+          { "unidade": "crop", "nomeUnidade": "SYNGENTA CROP", "taxa": 2.8, "funcionarios": 145, "periodo": "30" },
+          { "unidade": "seeds-rd", "nomeUnidade": "SYNGENTA SEEDS-R&D", "taxa": 3.1, "funcionarios": 89, "periodo": "30" },
+          { "unidade": "seeds", "nomeUnidade": "SYNGENTA SEEDS", "taxa": 3.5, "funcionarios": 178, "periodo": "30" },
+          { "unidade": "digital", "nomeUnidade": "SYNGENTA DIGITAL", "taxa": 3.8, "funcionarios": 112, "periodo": "30" }
+        ]
+      },
+      "absenteismoPorDoenca": {
+        "fonte": "Absenteísmo por Doença.xlsx",
+        "evolucaoMensal": [
+          { "mes": "Janeiro", "taxa": 2.1, "meta": 4.0, "periodo": "30" },
+          { "mes": "Fevereiro", "taxa": 1.8, "meta": 4.0, "periodo": "30" },
+          { "mes": "Março", "taxa": 2.2, "meta": 4.0, "periodo": "30" },
+          { "mes": "Abril", "taxa": 2.5, "meta": 4.0, "periodo": "30" },
+          { "mes": "Maio", "taxa": 1.9, "meta": 4.0, "periodo": "30" },
+          { "mes": "Junho", "taxa": 2.1, "meta": 4.0, "periodo": "30" },
+          { "mes": "Julho", "taxa": 1.8, "meta": 4.0, "periodo": "30" }
+        ]
+      },
+      "consultasTecnicas": {
+        "fonte": "Consultas Técnicas.xlsx",
+        "total": 67,
+        "respondidas": 58,
+        "pendentes": 9,
+        "periodo": "30",
+        "evolucaoMensal": [
+          { "mes": "Janeiro", "solicitadas": 12, "respondidas": 11, "periodo": "30" },
+          { "mes": "Fevereiro", "solicitadas": 8, "respondidas": 8, "periodo": "30" },
+          { "mes": "Março", "solicitadas": 15, "respondidas": 13, "periodo": "30" },
+          { "mes": "Abril", "solicitadas": 10, "respondidas": 9, "periodo": "30" },
+          { "mes": "Maio", "solicitadas": 11, "respondidas": 10, "periodo": "30" },
+          { "mes": "Junho", "solicitadas": 7, "respondidas": 5, "periodo": "30" },
+          { "mes": "Julho", "solicitadas": 4, "respondidas": 2, "periodo": "30" }
+        ]
+      },
+      "conformidade": {
+        "percentualGeral": 91.8,
+        "meta": 90,
+        "detalhes": [
+          { "categoria": "Conforme", "valor": 91.8, "cor": "#22c55e" },
+          { "categoria": "Não Conforme", "valor": 8.2, "cor": "#ef4444" }
+        ]
+      }
+    }
+  },
+  "instrucoes": {
+    "como_preencher": "Substitua os valores de exemplo pelos dados reais dos seus arquivos Excel",
+    "campos_principais": {
+      "valor": "Número principal do indicador",
+      "periodo": "Período do filtro (7, 30 ou 90 dias)",
+      "unidade": "Código da unidade (crop, seeds-rd, seeds, digital)",
+      "nomeUnidade": "Nome completo da unidade",
+      "meta": "Valor da meta estabelecida"
+    },
+    "mapeamento_unidades": {
+      "crop": "SYNGENTA CROP",
+      "seeds-rd": "SYNGENTA SEEDS-R&D", 
+      "seeds": "SYNGENTA SEEDS",
+      "digital": "SYNGENTA DIGITAL"
+    }
+  }
+}
