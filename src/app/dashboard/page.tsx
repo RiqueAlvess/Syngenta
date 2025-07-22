@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useDashboardData } from "@/app/hooks/use-dashboard-data";
+import { useDashboardData } from "@/hooks/use-dashboard-data";
 import { DashboardHeader } from "./components/dashboard-header";
 import { KpiCard } from "./components/kpi-card";
 import { ChartLineVisitas } from "./components/chart-line";
@@ -33,7 +33,8 @@ export default function DashboardPage() {
   const [unidade, setUnidade] = useState("todas");
   const [periodo, setPeriodo] = useState("30");
   
-  const { data, loading, error } = useDashboardData();
+  // Agora o hook recebe os parâmetros de filtro
+  const { data, loading, error } = useDashboardData(subgrupo, unidade, periodo);
 
   if (loading) {
     return (
@@ -41,6 +42,9 @@ export default function DashboardPage() {
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Carregando dados do dashboard...</p>
+          <p className="text-sm text-gray-500 mt-2">
+            Filtros: {subgrupo} | {unidade} | {periodo} dias
+          </p>
         </div>
       </div>
     );
@@ -76,7 +80,7 @@ export default function DashboardPage() {
   ];
 
   // Dados para reutilização - Avaliações Ambientais (usar dados de visitas como base)
-  const avaliacoesData = data.indicadores.seguranca.visitas.evolucaoMensal.map(item => ({
+  const avaliacoesData = data.indicadores.seguranca.visitas.evolucaoMensal.map((item: any) => ({
     mes: item.mes,
     programado: item.meta,
     executado: item.visitas,
@@ -84,7 +88,7 @@ export default function DashboardPage() {
   }));
 
   // Dados para reutilização - PPP (simulado baseado nos dados reais)
-  const pppData = data.indicadores.seguranca.visitas.evolucaoMensal.map(item => ({
+  const pppData = data.indicadores.seguranca.visitas.evolucaoMensal.map((item: any) => ({
     month: item.mes,
     desktop: Math.round(item.visitas * 1.2), // Simula solicitações
     mobile: item.visitas // Simula entregas
@@ -97,6 +101,11 @@ export default function DashboardPage() {
         <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
           <Shield className="h-6 w-6 text-blue-600" />
           Indicadores de Segurança
+          {unidade !== 'todas' && (
+            <span className="text-sm font-normal text-gray-500">
+              - {data.filtros.unidades.find(u => u.codigo === unidade)?.nome}
+            </span>
+          )}
         </h3>
 
         {/* KPIs Segurança */}
@@ -138,6 +147,11 @@ export default function DashboardPage() {
         <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
           <Activity className="h-6 w-6 text-green-600" />
           Indicadores de Saúde
+          {unidade !== 'todas' && (
+            <span className="text-sm font-normal text-gray-500">
+              - {data.filtros.unidades.find(u => u.codigo === unidade)?.nome}
+            </span>
+          )}
         </h3>
 
         {/* KPIs Saúde */}
@@ -252,6 +266,7 @@ export default function DashboardPage() {
     </>
   );
 
+  // ... resto do código permanece igual
   const renderSegurancaContent = () => (
     <>
       {/* Cards principais - Segurança (4 KPIs) */}
@@ -431,6 +446,25 @@ export default function DashboardPage() {
         onPeriodoChange={setPeriodo}
         data={data}
       />
+
+      {/* Indicador dos filtros ativos */}
+      {(unidade !== 'todas' || periodo !== '30') && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-6">
+          <p className="text-sm text-blue-800">
+            <strong>Filtros ativos:</strong> 
+            {unidade !== 'todas' && (
+              <span className="ml-2 bg-blue-100 px-2 py-1 rounded text-xs">
+                {data.filtros.unidades.find(u => u.codigo === unidade)?.nome}
+              </span>
+            )}
+            {periodo !== '30' && (
+              <span className="ml-2 bg-blue-100 px-2 py-1 rounded text-xs">
+                {periodo} dias
+              </span>
+            )}
+          </p>
+        </div>
+      )}
 
       {renderContent()}
     </>
