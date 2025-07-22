@@ -3,13 +3,31 @@
 import { MessageSquare } from "lucide-react";
 import { Watermark } from "@/components/ui/watermark";
 
-const consultasData = [
-  { label: "Total de Consultas", value: "67", color: "text-gray-700" },
-  { label: "Respondidas", value: "58", color: "text-green-600" },
-  { label: "Pendentes", value: "9", color: "text-orange-600" },
-];
+interface ResumoConsultasProps {
+  data: any;
+}
 
-export function ResumoConsultas() {
+export function ResumoConsultas({ data }: ResumoConsultasProps) {
+  const consultasInfo = data.indicadores.saude.consultasTecnicas;
+  
+  const consultasData = [
+    { 
+      label: "Total de Consultas", 
+      value: consultasInfo.total.toString(), 
+      color: "text-gray-700" 
+    },
+    { 
+      label: "Respondidas", 
+      value: consultasInfo.respondidas.toString(), 
+      color: "text-green-600" 
+    },
+    { 
+      label: "Pendentes", 
+      value: consultasInfo.pendentes.toString(), 
+      color: "text-orange-600" 
+    },
+  ];
+
   return (
     <div className="bg-white rounded-xl border shadow-sm relative overflow-hidden">
       <Watermark />
