@@ -12,13 +12,28 @@ interface DashboardHeaderProps {
   onSubgrupoChange: (subgrupo: string) => void;
   onUnidadeChange: (unidade: string) => void;
   onPeriodoChange: (periodo: string) => void;
+  data: any;
 }
 
 export function DashboardHeader({
   onSubgrupoChange,
   onUnidadeChange,
   onPeriodoChange,
+  data,
 }: DashboardHeaderProps) {
+  // Formatação da data de atualização
+  const formatarData = (dataISO: string) => {
+    const data = new Date(dataISO);
+    return data.toLocaleString('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+  };
+
   return (
     <div className="bg-white rounded-xl px-6 py-4 shadow-sm border border-gray-100">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -39,7 +54,7 @@ export function DashboardHeader({
               Dashboard Gerencial
             </h2>
             <p className="text-sm text-muted-foreground">
-              Última atualização: 03/07/2025, 22:17:12
+              Última atualização: {formatarData(data.metadata.ultimaAtualizacao)}
             </p>
           </div>
         </div>
@@ -51,9 +66,13 @@ export function DashboardHeader({
               <SelectValue placeholder="Subgrupo" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="todos">Todos</SelectItem>
-              <SelectItem value="seguranca">Segurança</SelectItem>
-              <SelectItem value="saude">Saúde</SelectItem>
+              {data.filtros.subgrupos.map((subgrupo: string) => (
+                <SelectItem key={subgrupo} value={subgrupo}>
+                  {subgrupo === 'todos' ? 'Todos' : 
+                   subgrupo === 'seguranca' ? 'Segurança' : 
+                   subgrupo === 'saude' ? 'Saúde' : subgrupo}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
 
@@ -62,9 +81,11 @@ export function DashboardHeader({
               <SelectValue placeholder="Período" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="7">7 dias</SelectItem>
-              <SelectItem value="30">30 dias</SelectItem>
-              <SelectItem value="90">90 dias</SelectItem>
+              {data.filtros.periodos.map((periodo: string) => (
+                <SelectItem key={periodo} value={periodo}>
+                  {periodo} dias
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
 
@@ -73,11 +94,11 @@ export function DashboardHeader({
               <SelectValue placeholder="Unidade" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="todas">Todas as unidades</SelectItem>
-              <SelectItem value="crop">SYNGENTA CROP</SelectItem>
-              <SelectItem value="seeds-rd">SYNGENTA SEEDS-R&D</SelectItem>
-              <SelectItem value="seeds">SYNGENTA SEEDS</SelectItem>
-              <SelectItem value="digital">SYNGENTA DIGITAL</SelectItem>
+              {data.filtros.unidades.map((unidade: any) => (
+                <SelectItem key={unidade.codigo} value={unidade.codigo}>
+                  {unidade.nome}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
