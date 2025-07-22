@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useDashboardData } from "@/hooks/use-dashboard-data";
 import { DashboardHeader } from "./components/dashboard-header";
 import { KpiCard } from "./components/kpi-card";
 import { ChartLineVisitas } from "./components/chart-line";
@@ -31,37 +32,63 @@ export default function DashboardPage() {
   const [subgrupo, setSubgrupo] = useState("todos");
   const [unidade, setUnidade] = useState("todas");
   const [periodo, setPeriodo] = useState("30");
+  
+  const { data, loading, error } = useDashboardData();
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Carregando dados do dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">Erro ao carregar dados: {error}</p>
+          <button 
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            Tentar novamente
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!data) return null;
 
   // Dados para reutilização - Conformidade
   const conformidadeData = [
-    { name: "Conforme", value: 92.5, fill: "#22c55e" },
-    { name: "Não Conforme", value: 7.5, fill: "#ef4444" },
+    { name: "Conforme", value: data.indicadores.seguranca.conformidade.percentualGeral, fill: "#22c55e" },
+    { name: "Não Conforme", value: 100 - data.indicadores.seguranca.conformidade.percentualGeral, fill: "#ef4444" },
   ];
 
   const conformidadeSaudeData = [
-    { name: "Conforme", value: 91.8, fill: "#22c55e" },
-    { name: "Não Conforme", value: 8.2, fill: "#ef4444" },
+    { name: "Conforme", value: data.indicadores.saude.conformidade.percentualGeral, fill: "#22c55e" },
+    { name: "Não Conforme", value: 100 - data.indicadores.saude.conformidade.percentualGeral, fill: "#ef4444" },
   ];
 
-  // Dados para reutilização - Avaliações Ambientais
-  const avaliacoesData = [
-    { mes: "Jan", programado: 25, executado: 23, naoExecutado: 2 },
-    { mes: "Fev", programado: 28, executado: 25, naoExecutado: 3 },
-    { mes: "Mar", programado: 30, executado: 28, naoExecutado: 2 },
-    { mes: "Abr", programado: 32, executado: 30, naoExecutado: 2 },
-    { mes: "Mai", programado: 29, executado: 27, naoExecutado: 2 },
-    { mes: "Jun", programado: 35, executado: 33, naoExecutado: 2 },
-  ];
+  // Dados para reutilização - Avaliações Ambientais (usar dados de visitas como base)
+  const avaliacoesData = data.indicadores.seguranca.visitas.evolucaoMensal.map(item => ({
+    mes: item.mes,
+    programado: item.meta,
+    executado: item.visitas,
+    naoExecutado: Math.max(0, item.meta - item.visitas)
+  }));
 
-  // Dados para reutilização - PPP
-  const pppData = [
-    { month: "Janeiro", desktop: 45, mobile: 42 },
-    { month: "Fevereiro", desktop: 38, mobile: 35 },
-    { month: "Março", desktop: 52, mobile: 48 },
-    { month: "Abril", desktop: 41, mobile: 39 },
-    { month: "Maio", desktop: 47, mobile: 44 },
-    { month: "Junho", desktop: 39, mobile: 37 },
-  ];
+  // Dados para reutilização - PPP (simulado baseado nos dados reais)
+  const pppData = data.indicadores.seguranca.visitas.evolucaoMensal.map(item => ({
+    month: item.mes,
+    desktop: Math.round(item.visitas * 1.2), // Simula solicitações
+    mobile: item.visitas // Simula entregas
+  }));
 
   const renderTodosContent = () => (
     <>
@@ -76,30 +103,30 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <KpiCard
             title="Visitas Realizadas"
-            value="142"
-            subtitle="14 pendentes"
-            info="+12% vs mês anterior"
+            value={data.indicadores.seguranca.kpis.visitasRealizadas.valor.toString()}
+            subtitle={`${data.indicadores.seguranca.kpis.visitasRealizadas.pendentes} pendentes`}
+            info={data.indicadores.seguranca.kpis.visitasRealizadas.variacao}
             icon={Users}
             iconColor="text-emerald-600"
           />
           <KpiCard
             title="Documentos Válidos"
-            value="234"
-            subtitle="18 vencendo em 30 dias"
+            value={data.indicadores.seguranca.kpis.documentosValidos.valor.toString()}
+            subtitle={`${data.indicadores.seguranca.kpis.documentosValidos.vencendoEm30Dias} vencendo em 30 dias`}
             icon={FileText}
             iconColor="text-yellow-500"
           />
           <KpiCard
             title="PPP Emitidos"
-            value="156"
-            subtitle="23 solicitações pendentes"
+            value={data.indicadores.seguranca.kpis.pppEmitidos.valor.toString()}
+            subtitle={`${data.indicadores.seguranca.kpis.pppEmitidos.solicitacoesPendentes} solicitações pendentes`}
             icon={Shield}
             iconColor="text-blue-600"
           />
           <KpiCard
             title="Medições Realizadas"
-            value="89%"
-            subtitle="76/85 medições"
+            value={`${data.indicadores.seguranca.kpis.medicoesRealizadas.valor}%`}
+            subtitle={`${data.indicadores.seguranca.kpis.medicoesRealizadas.realizadas}/${data.indicadores.seguranca.kpis.medicoesRealizadas.total} medições`}
             icon={BarChart3}
             iconColor="text-green-600"
           />
@@ -117,30 +144,30 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <KpiCard
             title="ASO Válidos"
-            value="312"
-            subtitle="28 vencendo em 30 dias"
+            value={data.indicadores.saude.kpis.asoValidos.valor.toString()}
+            subtitle={`${data.indicadores.saude.kpis.asoValidos.vencendoEm30Dias} vencendo em 30 dias`}
             icon={UserCheck}
             iconColor="text-green-600"
           />
           <KpiCard
             title="Exames Alterados"
-            value="9%"
-            subtitle="28/312 exames"
+            value={`${data.indicadores.saude.kpis.examesAlterados.valor}%`}
+            subtitle={`${data.indicadores.saude.kpis.examesAlterados.alterados}/${data.indicadores.saude.kpis.examesAlterados.total} exames`}
             icon={Activity}
             iconColor="text-orange-600"
           />
           <KpiCard
             title="Taxa Absenteísmo"
-            value="3.2%"
-            subtitle="-0.5% vs mês anterior"
-            info="Meta: < 4%"
+            value={`${data.indicadores.saude.kpis.taxaAbsenteismo.valor}%`}
+            subtitle={data.indicadores.saude.kpis.taxaAbsenteismo.variacao}
+            info={`Meta: < ${data.indicadores.saude.kpis.taxaAbsenteismo.meta}%`}
             icon={Calendar}
             iconColor="text-green-600"
           />
           <KpiCard
             title="Consultas Técnicas"
-            value="58"
-            subtitle="9 pendentes"
+            value={data.indicadores.saude.kpis.consultasTecnicas.valor.toString()}
+            subtitle={`${data.indicadores.saude.kpis.consultasTecnicas.pendentes} pendentes`}
             icon={Phone}
             iconColor="text-blue-600"
           />
@@ -149,8 +176,8 @@ export default function DashboardPage() {
 
       {/* Primeira linha de gráficos principais */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 py-6">
-        <ChartLineVisitas />
-        <ChartBarDocumentos />
+        <ChartLineVisitas data={data} />
+        <ChartBarDocumentos data={data} />
       </div>
 
       {/* Segunda linha de gráficos - Conformidade */}
@@ -159,16 +186,16 @@ export default function DashboardPage() {
           title="Conformidade Segurança"
           description="Indicadores de segurança do trabalho"
           data={conformidadeData}
-          centerValue="92.5%"
-          metaText="Meta: ≥ 90%"
+          centerValue={`${data.indicadores.seguranca.conformidade.percentualGeral}%`}
+          metaText={`Meta: ≥ ${data.indicadores.seguranca.conformidade.meta}%`}
           footerText="Baseado em visitas, documentos, PPP e medições"
         />
         <ChartPieDonut
           title="Conformidade Saúde"
           description="Indicadores de saúde ocupacional"
           data={conformidadeSaudeData}
-          centerValue="91.8%"
-          metaText="Meta: ≥ 90%"
+          centerValue={`${data.indicadores.saude.conformidade.percentualGeral}%`}
+          metaText={`Meta: ≥ ${data.indicadores.saude.conformidade.meta}%`}
           footerText="Baseado em ASO, exames, absenteísmo e consultas"
         />
       </div>
@@ -184,7 +211,7 @@ export default function DashboardPage() {
           footerText="Taxa de execução: 94.3%"
           metaText="Meta: ≥ 90% de execução das avaliações programadas"
         />
-        <ExamesAlterados />
+        <ExamesAlterados data={data} />
       </div>
 
       {/* Quarta linha - PPP (full width) */}
@@ -202,25 +229,25 @@ export default function DashboardPage() {
 
       {/* Quinta linha: Visitas e Status dos Documentos */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 py-6">
-        <VisitasPorUnidade />
-        <StatusDocumentos />
+        <VisitasPorUnidade data={data} />
+        <StatusDocumentos data={data} />
       </div>
 
       {/* Sexta linha: ASOS (full width) */}
       <div className="py-6">
-        <AsosCards />
+        <AsosCards data={data} />
       </div>
 
       {/* Sétima linha: Análises e Consultas */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 py-6">
         <AnalisesProdutos />
-        <ResumoConsultas />
+        <ResumoConsultas data={data} />
       </div>
 
       {/* Oitava linha: Medições e Absenteísmo */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 py-6">
-        <MedicoesCard />
-        <AbsenteismoCard />
+        <MedicoesCard data={data} />
+        <AbsenteismoCard data={data} />
       </div>
     </>
   );
@@ -231,30 +258,30 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 py-6">
         <KpiCard
           title="Visitas Realizadas"
-          value="142"
-          subtitle="14 pendentes"
-          info="+12% vs mês anterior"
+          value={data.indicadores.seguranca.kpis.visitasRealizadas.valor.toString()}
+          subtitle={`${data.indicadores.seguranca.kpis.visitasRealizadas.pendentes} pendentes`}
+          info={data.indicadores.seguranca.kpis.visitasRealizadas.variacao}
           icon={Users}
           iconColor="text-emerald-600"
         />
         <KpiCard
           title="Documentos Válidos"
-          value="234"
-          subtitle="18 vencendo em 30 dias"
+          value={data.indicadores.seguranca.kpis.documentosValidos.valor.toString()}
+          subtitle={`${data.indicadores.seguranca.kpis.documentosValidos.vencendoEm30Dias} vencendo em 30 dias`}
           icon={FileText}
           iconColor="text-yellow-500"
         />
         <KpiCard
           title="PPP Emitidos"
-          value="156"
-          subtitle="23 solicitações pendentes"
+          value={data.indicadores.seguranca.kpis.pppEmitidos.valor.toString()}
+          subtitle={`${data.indicadores.seguranca.kpis.pppEmitidos.solicitacoesPendentes} solicitações pendentes`}
           icon={Shield}
           iconColor="text-blue-600"
         />
         <KpiCard
           title="Medições Realizadas"
-          value="89%"
-          subtitle="76/85 medições"
+          value={`${data.indicadores.seguranca.kpis.medicoesRealizadas.valor}%`}
+          subtitle={`${data.indicadores.seguranca.kpis.medicoesRealizadas.realizadas}/${data.indicadores.seguranca.kpis.medicoesRealizadas.total} medições`}
           icon={BarChart3}
           iconColor="text-green-600"
         />
@@ -262,8 +289,8 @@ export default function DashboardPage() {
 
       {/* Primeira linha de gráficos */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <ChartLineVisitas />
-        <ChartBarDocumentos />
+        <ChartLineVisitas data={data} />
+        <ChartBarDocumentos data={data} />
       </div>
 
       {/* Segunda linha de gráficos */}
@@ -272,8 +299,8 @@ export default function DashboardPage() {
           title="Conformidade Segurança"
           description="Cálculo automático baseado em indicadores de segurança"
           data={conformidadeData}
-          centerValue="92.5%"
-          metaText="Meta: ≥ 90%"
+          centerValue={`${data.indicadores.seguranca.conformidade.percentualGeral}%`}
+          metaText={`Meta: ≥ ${data.indicadores.seguranca.conformidade.meta}%`}
           footerText="Baseado em visitas, documentos, PPP e medições"
         />
         <ChartAreaGradient
@@ -302,13 +329,13 @@ export default function DashboardPage() {
 
       {/* Quarta linha: Visitas e Status dos Documentos */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 py-6">
-        <VisitasPorUnidade />
-        <StatusDocumentos />
+        <VisitasPorUnidade data={data} />
+        <StatusDocumentos data={data} />
       </div>
 
       {/* Quinta linha: Medições */}
       <div className="py-6">
-        <MedicoesCard />
+        <MedicoesCard data={data} />
       </div>
     </>
   );
@@ -319,30 +346,30 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 py-6">
         <KpiCard
           title="ASO Válidos"
-          value="312"
-          subtitle="28 vencendo em 30 dias"
+          value={data.indicadores.saude.kpis.asoValidos.valor.toString()}
+          subtitle={`${data.indicadores.saude.kpis.asoValidos.vencendoEm30Dias} vencendo em 30 dias`}
           icon={UserCheck}
           iconColor="text-green-600"
         />
         <KpiCard
           title="Exames Alterados"
-          value="9%"
-          subtitle="28/312 exames"
+          value={`${data.indicadores.saude.kpis.examesAlterados.valor}%`}
+          subtitle={`${data.indicadores.saude.kpis.examesAlterados.alterados}/${data.indicadores.saude.kpis.examesAlterados.total} exames`}
           icon={Activity}
           iconColor="text-orange-600"
         />
         <KpiCard
           title="Taxa Absenteísmo"
-          value="3.2%"
-          subtitle="-0.5% vs mês anterior"
-          info="Meta: < 4%"
+          value={`${data.indicadores.saude.kpis.taxaAbsenteismo.valor}%`}
+          subtitle={data.indicadores.saude.kpis.taxaAbsenteismo.variacao}
+          info={`Meta: < ${data.indicadores.saude.kpis.taxaAbsenteismo.meta}%`}
           icon={Calendar}
           iconColor="text-green-600"
         />
         <KpiCard
           title="Consultas Técnicas"
-          value="58"
-          subtitle="9 pendentes"
+          value={data.indicadores.saude.kpis.consultasTecnicas.valor.toString()}
+          subtitle={`${data.indicadores.saude.kpis.consultasTecnicas.pendentes} pendentes`}
           icon={Phone}
           iconColor="text-blue-600"
         />
@@ -350,8 +377,8 @@ export default function DashboardPage() {
 
       {/* Primeira linha de gráficos */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <ChartLineVisitas />
-        <ChartBarDocumentos />
+        <ChartLineVisitas data={data} />
+        <ChartBarDocumentos data={data} />
       </div>
 
       {/* Segunda linha de gráficos */}
@@ -360,27 +387,27 @@ export default function DashboardPage() {
           title="Conformidade Saúde"
           description="Cálculo automático baseado em indicadores de saúde"
           data={conformidadeSaudeData}
-          centerValue="91.8%"
-          metaText="Meta: ≥ 90%"
+          centerValue={`${data.indicadores.saude.conformidade.percentualGeral}%`}
+          metaText={`Meta: ≥ ${data.indicadores.saude.conformidade.meta}%`}
           footerText="Baseado em ASO, exames, absenteísmo e consultas"
         />
-        <ExamesAlterados />
+        <ExamesAlterados data={data} />
       </div>
 
       {/* Terceira linha: ASOS (full width) */}
       <div className="py-6">
-        <AsosCards />
+        <AsosCards data={data} />
       </div>
 
       {/* Quarta linha: Análises e Consultas */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 py-6">
         <AnalisesProdutos />
-        <ResumoConsultas />
+        <ResumoConsultas data={data} />
       </div>
 
       {/* Quinta linha: Absenteísmo */}
       <div className="py-6">
-        <AbsenteismoCard />
+        <AbsenteismoCard data={data} />
       </div>
     </>
   );
@@ -402,6 +429,7 @@ export default function DashboardPage() {
         onSubgrupoChange={setSubgrupo}
         onUnidadeChange={setUnidade}
         onPeriodoChange={setPeriodo}
+        data={data}
       />
 
       {renderContent()}
