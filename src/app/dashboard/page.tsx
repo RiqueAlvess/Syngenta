@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useDashboardData } from "@/hooks/use-dashboard-data";
+import { useDashboardData } from "@/app/hooks/use-dashboard-data";
 import { DashboardHeader } from "./components/dashboard-header";
 import { KpiCard } from "./components/kpi-card";
 import { ChartLineVisitas } from "./components/chart-line";
