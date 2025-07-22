@@ -17,24 +17,25 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-const examesData = [
-  { unidade: "CROP", normais: 78, alterados: 7, total: 85 },
-  { unidade: "SEEDS-R&D", normais: 65, alterados: 5, total: 70 },
-  { unidade: "SEEDS", normais: 82, alterados: 8, total: 90 },
-  { unidade: "DIGITAL", normais: 59, alterados: 8, total: 67 },
-];
+interface ExamesAlteradosProps {
+  data: any;
+}
 
 const chartConfig = {
   normais: { label: "Normais", color: "#22c55e" },
   alterados: { label: "Alterados", color: "#ef4444" },
 } satisfies ChartConfig;
 
-export function ExamesAlterados() {
-  const totalExames = examesData.reduce((acc, item) => acc + item.total, 0);
-  const totalAlterados = examesData.reduce(
-    (acc, item) => acc + item.alterados,
-    0
-  );
+export function ExamesAlterados({ data }: ExamesAlteradosProps) {
+  const examesData = data.indicadores.saude.exames.porUnidade.map((item: any) => ({
+    unidade: item.nomeUnidade,
+    normais: item.normais,
+    alterados: item.alterados,
+    total: item.total
+  }));
+
+  const totalExames = examesData.reduce((acc: number, item: any) => acc + item.total, 0);
+  const totalAlterados = examesData.reduce((acc: number, item: any) => acc + item.alterados, 0);
   const percentualAlterados = ((totalAlterados / totalExames) * 100).toFixed(1);
 
   return (
@@ -81,7 +82,7 @@ export function ExamesAlterados() {
           -1.2% em relação ao mês anterior <TrendingDown className="h-4 w-4" />
         </div>
         <div className="text-muted-foreground leading-none">
-          Meta: manter abaixo de 10% de exames alterados
+          Meta: manter abaixo de {data.indicadores.saude.kpis.examesAlterados.meta}% de exames alterados
         </div>
       </CardFooter>
     </Card>
