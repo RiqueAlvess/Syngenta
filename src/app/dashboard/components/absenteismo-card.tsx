@@ -17,30 +17,30 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-interface AbsenteismoCardProps {
-  data: any;
-}
+const absenteismoData = [
+  { mes: "Jan", taxa: 4.2, meta: 4.0 },
+  { mes: "Fev", taxa: 3.8, meta: 4.0 },
+  { mes: "Mar", taxa: 3.5, meta: 4.0 },
+  { mes: "Abr", taxa: 3.9, meta: 4.0 },
+  { mes: "Mai", taxa: 3.1, meta: 4.0 },
+  { mes: "Jun", taxa: 3.2, meta: 4.0 },
+];
+
+const absenteismoPorUnidade = [
+  { unidade: "SYNGENTA CROP", taxa: 2.8, funcionarios: 145 },
+  { unidade: "SYNGENTA SEEDS-R&D", taxa: 3.1, funcionarios: 89 },
+  { unidade: "SYNGENTA SEEDS", taxa: 3.5, funcionarios: 178 },
+  { unidade: "SYNGENTA DIGITAL", taxa: 3.8, funcionarios: 112 },
+];
 
 const chartConfig = {
   taxa: { label: "Taxa (%)", color: "#ef4444" },
   meta: { label: "Meta (%)", color: "#94a3b8" },
 } satisfies ChartConfig;
 
-export function AbsenteismoCard({ data }: AbsenteismoCardProps) {
-  const absenteismoData = data.indicadores.saude.absenteismoPorDoenca.evolucaoMensal.map((item: any) => ({
-    mes: item.mes.substring(0, 3), // Abrevia o nome do mês
-    taxa: item.taxa,
-    meta: item.meta
-  }));
-
-  const absenteismoPorUnidade = data.indicadores.saude.absenteismo.porUnidade.map((item: any) => ({
-    unidade: item.nomeUnidade,
-    taxa: item.taxa,
-    funcionarios: item.funcionarios
-  }));
-
+export function AbsenteismoCard() {
   const mediaGeral =
-    absenteismoPorUnidade.reduce((acc: number, item: any) => acc + item.taxa, 0) /
+    absenteismoPorUnidade.reduce((acc, item) => acc + item.taxa, 0) /
     absenteismoPorUnidade.length;
 
   return (
@@ -99,7 +99,7 @@ export function AbsenteismoCard({ data }: AbsenteismoCardProps) {
         <div>
           <h4 className="text-sm font-medium mb-3">Por Unidade</h4>
           <div className="space-y-3">
-            {absenteismoPorUnidade.map((item: any) => (
+            {absenteismoPorUnidade.map((item) => (
               <div
                 key={item.unidade}
                 className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
@@ -130,7 +130,7 @@ export function AbsenteismoCard({ data }: AbsenteismoCardProps) {
           <TrendingDown className="h-4 w-4" />
         </div>
         <div className="text-muted-foreground leading-none">
-          Meta: manter abaixo de {data.indicadores.saude.kpis.taxaAbsenteismo.meta}% ao mês
+          Meta: manter abaixo de 4% ao mês
         </div>
       </CardFooter>
     </Card>

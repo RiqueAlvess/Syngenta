@@ -18,25 +18,24 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-interface ChartLineVisitasProps {
-  data: any;
-}
+const chartData = [
+  { mes: "Jan", visitas: 32, meta: 38 },
+  { mes: "Fev", visitas: 35, meta: 38 },
+  { mes: "Mar", visitas: 39, meta: 38 },
+  { mes: "Abr", visitas: 42, meta: 38 },
+  { mes: "Mai", visitas: 38, meta: 38 },
+  { mes: "Jun", visitas: 42, meta: 38 },
+];
 
 const chartConfig = {
   visitas: { label: "Realizadas", color: "#22c55e" },
   meta: { label: "Meta", color: "#94a3b8" },
 } satisfies ChartConfig;
 
-export function ChartLineVisitas({ data }: ChartLineVisitasProps) {
-  const chartData = data.indicadores.seguranca.visitas.evolucaoMensal.map((item: any) => ({
-    mes: item.mes.substring(0, 3), // Abrevia o nome do mês
-    visitas: item.visitas,
-    meta: item.meta
-  }));
-
+export function ChartLineVisitas() {
   const mediaVisitas =
-    chartData.reduce((acc: number, item: any) => acc + item.visitas, 0) / chartData.length;
-  const metaMensal = chartData[0]?.meta || 0;
+    chartData.reduce((acc, item) => acc + item.visitas, 0) / chartData.length;
+  const metaMensal = chartData[0].meta;
   const atingimentoMeta = ((mediaVisitas / metaMensal) * 100).toFixed(1);
 
   return (

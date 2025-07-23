@@ -3,43 +3,38 @@
 import { Shield } from "lucide-react";
 import { Watermark } from "@/components/ui/watermark";
 
-interface AsosCardsProps {
-  data: any;
-}
+const asosData = [
+  {
+    label: "Válidos",
+    value: "156",
+    bgColor: "bg-green-50",
+    textColor: "text-green-600",
+    valueColor: "text-green-700",
+  },
+  {
+    label: "Pendentes",
+    value: "15",
+    bgColor: "bg-blue-50",
+    textColor: "text-blue-600",
+    valueColor: "text-blue-700",
+  },
+  {
+    label: "Vencendo (30 dias)",
+    value: "23",
+    bgColor: "bg-yellow-50",
+    textColor: "text-yellow-600",
+    valueColor: "text-yellow-700",
+  },
+  {
+    label: "Vencidos",
+    value: "8",
+    bgColor: "bg-red-50",
+    textColor: "text-red-600",
+    valueColor: "text-red-700",
+  },
+];
 
-export function AsosCards({ data }: AsosCardsProps) {
-  const asosData = data.indicadores.saude.asos.resumo.map((item: any) => {
-    // Mapear cores baseado no status
-    const colorMap: { [key: string]: { bgColor: string; textColor: string; valueColor: string } } = {
-      validos: {
-        bgColor: "bg-green-50",
-        textColor: "text-green-600", 
-        valueColor: "text-green-700"
-      },
-      pendentes: {
-        bgColor: "bg-blue-50",
-        textColor: "text-blue-600",
-        valueColor: "text-blue-700"
-      },
-      vencendo: {
-        bgColor: "bg-yellow-50", 
-        textColor: "text-yellow-600",
-        valueColor: "text-yellow-700"
-      },
-      vencidos: {
-        bgColor: "bg-red-50",
-        textColor: "text-red-600", 
-        valueColor: "text-red-700"
-      }
-    };
-
-    return {
-      label: item.label,
-      value: item.valor.toString(),
-      ...colorMap[item.status]
-    };
-  });
-
+export function AsosCards() {
   return (
     <div className="bg-white rounded-xl border shadow-sm relative overflow-hidden">
       <Watermark />

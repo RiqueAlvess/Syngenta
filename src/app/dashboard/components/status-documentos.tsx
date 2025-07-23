@@ -9,29 +9,38 @@ import {
 } from "lucide-react";
 import { Watermark } from "@/components/ui/watermark";
 
-interface StatusDocumentosProps {
-  data: any;
-}
+const statusData = [
+  {
+    label: "Documentos Válidos",
+    value: "234",
+    icon: CheckCircle,
+    color: "text-green-600",
+    bgColor: "bg-green-50",
+  },
+  {
+    label: "Vencendo (30 dias)",
+    value: "18",
+    icon: AlertTriangle,
+    color: "text-yellow-600",
+    bgColor: "bg-yellow-50",
+  },
+  {
+    label: "Vencidos",
+    value: "7",
+    icon: XCircle,
+    color: "text-red-600",
+    bgColor: "bg-red-50",
+  },
+  {
+    label: "Pendentes de Entrega",
+    value: "43",
+    icon: Clock,
+    color: "text-blue-600",
+    bgColor: "bg-blue-50",
+  },
+];
 
-export function StatusDocumentos({ data }: StatusDocumentosProps) {
-  const statusData = data.indicadores.seguranca.documentos.statusGeral.map((item: any) => {
-    // Mapear ícones baseado no status
-    const iconMap: { [key: string]: any } = {
-      validos: CheckCircle,
-      vencendo: AlertTriangle,
-      vencidos: XCircle,
-      pendentes: Clock
-    };
-
-    return {
-      label: item.label,
-      value: item.valor.toString(),
-      icon: iconMap[item.status] || FileText,
-      color: item.cor,
-      bgColor: item.fundo
-    };
-  });
-
+export function StatusDocumentos() {
   return (
     <div className="bg-white rounded-xl border shadow-sm relative overflow-hidden">
       <Watermark />

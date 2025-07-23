@@ -18,9 +18,12 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-interface ChartBarDocumentosProps {
-  data: any;
-}
+const chartData = [
+  { unidade: "CROP", validos: 89, vencendo: 8, vencidos: 3 },
+  { unidade: "SEEDS-R&D", validos: 65, vencendo: 6, vencidos: 2 },
+  { unidade: "SEEDS", validos: 78, vencendo: 5, vencidos: 2 },
+  { unidade: "DIGITAL", validos: 45, vencendo: 4, vencidos: 1 },
+];
 
 const chartConfig = {
   validos: { label: "Válidos", color: "#22c55e" },
@@ -28,19 +31,12 @@ const chartConfig = {
   vencidos: { label: "Vencidos", color: "#ef4444" },
 } satisfies ChartConfig;
 
-export function ChartBarDocumentos({ data }: ChartBarDocumentosProps) {
-  const chartData = data.indicadores.seguranca.documentos.porUnidade.map((item: any) => ({
-    unidade: item.nomeUnidade.split(' ')[1] || item.nomeUnidade, // Pega só a segunda palavra (CROP, SEEDS, etc)
-    validos: item.validos,
-    vencendo: item.vencendo,
-    vencidos: item.vencidos
-  }));
-
+export function ChartBarDocumentos() {
   const totalDocumentos = chartData.reduce(
-    (acc: number, item: any) => acc + item.validos + item.vencendo + item.vencidos,
+    (acc, item) => acc + item.validos + item.vencendo + item.vencidos,
     0
   );
-  const totalValidos = chartData.reduce((acc: number, item: any) => acc + item.validos, 0);
+  const totalValidos = chartData.reduce((acc, item) => acc + item.validos, 0);
   const percentualValidos = ((totalValidos / totalDocumentos) * 100).toFixed(1);
 
   return (
@@ -48,7 +44,7 @@ export function ChartBarDocumentos({ data }: ChartBarDocumentosProps) {
       <CardHeader>
         <CardTitle>Documentos por Unidade</CardTitle>
         <CardDescription>
-          Status atual dos documentos ({data.indicadores.seguranca.documentos.tipos.join(', ')})
+          Status atual dos documentos (PGR, LTCAT, PPR, L.I, L.P, PCMSO, R.A)
         </CardDescription>
       </CardHeader>
       <CardContent>
