@@ -3,7 +3,7 @@
 import { Shield } from "lucide-react";
 import { Watermark } from "@/components/ui/watermark";
 
-// DADOS REAIS - ASOs por status
+// DADOS REAIS - ASOs por status (EXATOS conforme fornecido)
 const asosData = [
   {
     label: "Válidos",
@@ -13,7 +13,7 @@ const asosData = [
     valueColor: "text-green-700",
   },
   {
-    label: "Vencendo (30 dias)",
+    label: "Vencendo",
     value: "674",
     bgColor: "bg-yellow-50",
     textColor: "text-yellow-600",
@@ -53,7 +53,7 @@ export function AsosCards() {
             <h3 className="leading-none font-semibold">ASOS - Atestados de Saúde Ocupacional</h3>
           </div>
           <p className="text-muted-foreground text-sm">
-            Controle de atestados válidos, vencendo e vencidos
+            Controle de atestados válidos, vencendo e vencidos (dados exatos)
           </p>
         </div>
 
