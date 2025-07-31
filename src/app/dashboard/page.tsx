@@ -72,36 +72,35 @@ export default function DashboardPage() {
           Indicadores de Segurança
         </h3>
 
-        {/* KPIs Segurança */}
+        {/* KPIs Segurança - DADOS REAIS */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <KpiCard
             title="Visitas Realizadas"
-            value="142"
-            subtitle="14 pendentes"
-            info="+12% vs mês anterior"
+            value="7"
+            subtitle="Período atual"
             icon={Users}
             iconColor="text-emerald-600"
           />
           <KpiCard
             title="Documentos Válidos"
-            value="234"
-            subtitle="18 vencendo em 30 dias"
+            value="10"
+            subtitle="6 vencidos"
             icon={FileText}
             iconColor="text-yellow-500"
           />
           <KpiCard
             title="PPP Emitidos"
-            value="156"
-            subtitle="23 solicitações pendentes"
+            value="Sem dados"
+            subtitle="Aguardando informações"
             icon={Shield}
-            iconColor="text-blue-600"
+            iconColor="text-gray-400"
           />
           <KpiCard
             title="Medições Realizadas"
-            value="89%"
-            subtitle="76/85 medições"
+            value="Sem dados"
+            subtitle="Aguardando informações"
             icon={BarChart3}
-            iconColor="text-green-600"
+            iconColor="text-gray-400"
           />
         </div>
       </div>
@@ -113,34 +112,33 @@ export default function DashboardPage() {
           Indicadores de Saúde
         </h3>
 
-        {/* KPIs Saúde */}
+        {/* KPIs Saúde - DADOS REAIS */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <KpiCard
             title="ASO Válidos"
-            value="312"
-            subtitle="28 vencendo em 30 dias"
+            value="4,521"
+            subtitle="674 vencendo, 1,273 vencidos"
             icon={UserCheck}
             iconColor="text-green-600"
           />
           <KpiCard
             title="Exames Alterados"
-            value="9%"
-            subtitle="28/312 exames"
+            value="3,122"
+            subtitle="Total de exames com alteração"
             icon={Activity}
             iconColor="text-orange-600"
           />
           <KpiCard
             title="Taxa Absenteísmo"
-            value="3.2%"
-            subtitle="-0.5% vs mês anterior"
-            info="Meta: < 4%"
+            value="6.50%"
+            subtitle="Taxa atual"
             icon={Calendar}
-            iconColor="text-green-600"
+            iconColor="text-orange-600"
           />
           <KpiCard
             title="Consultas Técnicas"
-            value="58"
-            subtitle="9 pendentes"
+            value="7"
+            subtitle="Período atual"
             icon={Phone}
             iconColor="text-blue-600"
           />
@@ -227,36 +225,35 @@ export default function DashboardPage() {
 
   const renderSegurancaContent = () => (
     <>
-      {/* Cards principais - Segurança (4 KPIs) */}
+      {/* Cards principais - Segurança (4 KPIs) - DADOS REAIS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 py-6">
         <KpiCard
           title="Visitas Realizadas"
-          value="142"
-          subtitle="14 pendentes"
-          info="+12% vs mês anterior"
+          value="7"
+          subtitle="Período atual"
           icon={Users}
           iconColor="text-emerald-600"
         />
         <KpiCard
           title="Documentos Válidos"
-          value="234"
-          subtitle="18 vencendo em 30 dias"
+          value="10"
+          subtitle="6 vencidos"
           icon={FileText}
           iconColor="text-yellow-500"
         />
         <KpiCard
           title="PPP Emitidos"
-          value="156"
-          subtitle="23 solicitações pendentes"
+          value="Sem dados"
+          subtitle="Aguardando informações"
           icon={Shield}
-          iconColor="text-blue-600"
+          iconColor="text-gray-400"
         />
         <KpiCard
           title="Medições Realizadas"
-          value="89%"
-          subtitle="76/85 medições"
+          value="Sem dados"
+          subtitle="Aguardando informações"
           icon={BarChart3}
-          iconColor="text-green-600"
+          iconColor="text-gray-400"
         />
       </div>
 
@@ -315,34 +312,33 @@ export default function DashboardPage() {
 
   const renderSaudeContent = () => (
     <>
-      {/* Cards principais - Saúde (4 KPIs) */}
+      {/* Cards principais - Saúde (4 KPIs) - DADOS REAIS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 py-6">
         <KpiCard
           title="ASO Válidos"
-          value="312"
-          subtitle="28 vencendo em 30 dias"
+          value="4,521"
+          subtitle="674 vencendo, 1,273 vencidos"
           icon={UserCheck}
           iconColor="text-green-600"
         />
         <KpiCard
           title="Exames Alterados"
-          value="9%"
-          subtitle="28/312 exames"
+          value="3,122"
+          subtitle="Total de exames com alteração"
           icon={Activity}
           iconColor="text-orange-600"
         />
         <KpiCard
           title="Taxa Absenteísmo"
-          value="3.2%"
-          subtitle="-0.5% vs mês anterior"
-          info="Meta: < 4%"
+          value="6.50%"
+          subtitle="Taxa atual"
           icon={Calendar}
-          iconColor="text-green-600"
+          iconColor="text-orange-600"
         />
         <KpiCard
           title="Consultas Técnicas"
-          value="58"
-          subtitle="9 pendentes"
+          value="7"
+          subtitle="Período atual"
           icon={Phone}
           iconColor="text-blue-600"
         />
