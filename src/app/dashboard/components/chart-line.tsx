@@ -1,7 +1,6 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
+import { Users, X } from "lucide-react";
 
 import {
   Card,
@@ -11,78 +10,56 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
-
-const chartData = [
-  { mes: "Jan", visitas: 32, meta: 38 },
-  { mes: "Fev", visitas: 35, meta: 38 },
-  { mes: "Mar", visitas: 39, meta: 38 },
-  { mes: "Abr", visitas: 42, meta: 38 },
-  { mes: "Mai", visitas: 38, meta: 38 },
-  { mes: "Jun", visitas: 42, meta: 38 },
-];
-
-const chartConfig = {
-  visitas: { label: "Realizadas", color: "#22c55e" },
-  meta: { label: "Meta", color: "#94a3b8" },
-} satisfies ChartConfig;
 
 export function ChartLineVisitas() {
-  const mediaVisitas =
-    chartData.reduce((acc, item) => acc + item.visitas, 0) / chartData.length;
-  const metaMensal = chartData[0].meta;
-  const atingimentoMeta = ((mediaVisitas / metaMensal) * 100).toFixed(1);
-
   return (
     <Card>
       <CardHeader>
         <CardTitle>Tendência de Visitas</CardTitle>
         <CardDescription>Visitas realizadas vs meta mensal</CardDescription>
       </CardHeader>
+      
+      {/* X Vermelho para indicar falta de dados */}
+      <div className="absolute top-4 right-4 z-20">
+        <div className="bg-red-100 rounded-full p-2">
+          <X className="h-6 w-6 text-red-600" />
+        </div>
+      </div>
+
       <CardContent>
-        <ChartContainer config={chartConfig} className="w-full">
-          <LineChart data={chartData} margin={{ left: 12, right: 12 }}>
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="mes"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-            />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-            <Line
-              dataKey="visitas"
-              type="monotone"
-              stroke="var(--color-visitas)"
-              strokeWidth={3}
-              dot={{ r: 4 }}
-            />
-            <Line
-              dataKey="meta"
-              type="monotone"
-              stroke="var(--color-meta)"
-              strokeWidth={2}
-              strokeDasharray="5 5"
-              dot={false}
-            />
-          </LineChart>
-        </ChartContainer>
+        {/* Indicador de sem dados */}
+        <div className="flex flex-col items-center justify-center py-12 text-center">
+          <div className="bg-gray-100 rounded-full p-4 mb-4">
+            <Users className="h-8 w-8 text-gray-400" />
+          </div>
+          <h4 className="text-lg font-medium text-gray-900 mb-2">
+            Dados não disponíveis
+          </h4>
+          <p className="text-gray-500 text-sm mb-4">
+            Dados históricos de visitas não foram fornecidos.
+          </p>
+          
+          {/* Dados disponíveis */}
+          <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-blue-700">7</div>
+              <div className="text-sm text-blue-600">Total de Visitas Realizadas</div>
+              <div className="text-xs text-blue-500 mt-1">
+                (Período atual - sem histórico mensal)
+              </div>
+            </div>
+          </div>
+        </div>
       </CardContent>
+      
       <CardFooter>
         <div className="flex w-full items-start gap-2 text-sm">
           <div className="grid gap-2">
-            <div className="flex items-center gap-2 leading-none font-medium">
-              Atingimento da meta: {atingimentoMeta}%{" "}
-              <TrendingUp className="h-4 w-4" />
+            <div className="flex items-center gap-2 leading-none font-medium text-gray-500">
+              Apenas total disponível: 7 visitas
             </div>
             <div className="text-muted-foreground flex items-center gap-2 leading-none">
-              Meta mensal: {metaMensal} visitas | Média realizada:{" "}
-              {mediaVisitas.toFixed(1)}
+              Histórico mensal não fornecido
             </div>
           </div>
         </div>
