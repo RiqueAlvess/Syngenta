@@ -49,7 +49,7 @@ export function AbsenteismoCard() {
       <CardHeader>
         <CardTitle>Absenteísmo por Doença</CardTitle>
         <CardDescription>
-          Taxa anual por unidade (dados de 2,036 registros válidos de 7,830 totais)
+          Taxa anual por unidade - Base: 739 funcionários com registro de absenteísmo (de 2,036 registros válidos)
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -67,6 +67,14 @@ export function AbsenteismoCard() {
             <div className="text-xl font-bold text-red-700">{taxaMinima}%</div>
             <div className="text-sm text-red-600">Taxa Mínima</div>
           </div>
+        </div>
+
+        {/* Nota importante sobre os dados */}
+        <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
+          <p className="text-sm text-blue-800">
+            <strong>Importante:</strong> Os dados referem-se apenas aos <strong>739 funcionários que tiveram registros de absenteísmo</strong>, 
+            não ao total de funcionários das empresas.
+          </p>
         </div>
 
         <div>
@@ -104,7 +112,7 @@ export function AbsenteismoCard() {
           <TrendingDown className="h-4 w-4" />
         </div>
         <div className="text-muted-foreground leading-none">
-          Meta: manter abaixo de 4% ao ano | 16 empresas únicas analisadas
+          Meta: manter abaixo de 4% ao ano | Análise de 739 funcionários com absenteísmo de 16 empresas
         </div>
       </CardFooter>
     </Card>
