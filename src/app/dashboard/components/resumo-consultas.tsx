@@ -3,10 +3,11 @@
 import { MessageSquare } from "lucide-react";
 import { Watermark } from "@/components/ui/watermark";
 
+// DADOS REAIS - Baseado no KPI de 7 consultas técnicas
 const consultasData = [
-  { label: "Total de Consultas", value: "67", color: "text-gray-700" },
-  { label: "Respondidas", value: "58", color: "text-green-600" },
-  { label: "Pendentes", value: "9", color: "text-orange-600" },
+  { label: "Total de Consultas", value: "7", color: "text-gray-700" },
+  { label: "Respondidas", value: "7", color: "text-green-600" },
+  { label: "Pendentes", value: "0", color: "text-gray-400" },
 ];
 
 export function ResumoConsultas() {
@@ -36,6 +37,21 @@ export function ResumoConsultas() {
               </span>
             </div>
           ))}
+        </div>
+
+        {/* Status resumido */}
+        <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+          <div className="text-center">
+            <div className="text-xl font-bold text-green-700">
+              100%
+            </div>
+            <div className="text-sm text-green-600">
+              Consultas Respondidas
+            </div>
+            <div className="text-xs text-green-500 mt-1">
+              ✓ Todas as 7 consultas foram atendidas
+            </div>
+          </div>
         </div>
       </div>
     </div>
