@@ -1,7 +1,6 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
-import { Pie, PieChart, Cell } from "recharts";
+import { Shield, Activity, X } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -10,12 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
 
 interface ChartPieDonutProps {
   title: string;
@@ -38,11 +31,9 @@ export function ChartPieDonut({
   footerText,
   metaText,
 }: ChartPieDonutProps) {
-  const chartConfig = {
-    value: {
-      label: "Value",
-    },
-  } satisfies ChartConfig;
+  // Determina o ícone baseado no título
+  const isSeguranca = title.toLowerCase().includes('segurança');
+  const IconComponent = isSeguranca ? Shield : Activity;
 
   return (
     <Card className="flex flex-col">
@@ -50,56 +41,43 @@ export function ChartPieDonut({
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 pb-0">
-        <ChartContainer
-          config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px]"
-        >
-          <PieChart>
-            <ChartTooltip
-              cursor={false}
-              content={
-                <ChartTooltipContent
-                  formatter={(value, name) => [
-                    `${Number(value).toFixed(1)}%`,
-                    name,
-                  ]}
-                  hideLabel
-                />
-              }
-            />
-            <Pie
-              data={data}
-              dataKey="value"
-              nameKey="name"
-              innerRadius={60}
-              outerRadius={100}
-              startAngle={90}
-              endAngle={450}
-            >
-              {data.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.fill} />
-              ))}
-            </Pie>
-            {centerValue && (
-              <text
-                x="50%"
-                y="50%"
-                textAnchor="middle"
-                dominantBaseline="middle"
-                className="fill-foreground text-2xl font-bold"
-              >
-                {centerValue}
-              </text>
-            )}
-          </PieChart>
-        </ChartContainer>
-      </CardContent>
-      <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 leading-none font-medium">
-          {metaText} <TrendingUp className="h-4 w-4" />
+      
+      {/* X Vermelho para indicar falta de dados */}
+      <div className="absolute top-4 right-4 z-20">
+        <div className="bg-red-100 rounded-full p-2">
+          <X className="h-6 w-6 text-red-600" />
         </div>
-        <div className="text-muted-foreground leading-none">{footerText}</div>
+      </div>
+
+      <CardContent className="flex-1 pb-0">
+        {/* Indicador de sem dados */}
+        <div className="flex flex-col items-center justify-center py-8 text-center">
+          <div className="bg-gray-100 rounded-full p-4 mb-4">
+            <IconComponent className="h-8 w-8 text-gray-400" />
+          </div>
+          <h4 className="text-lg font-medium text-gray-900 mb-2">
+            Dados não disponíveis
+          </h4>
+          <p className="text-gray-500 text-sm mb-6">
+            Dados para cálculo de conformidade não foram fornecidos.
+          </p>
+          
+          {/* Placeholder do gráfico circular */}
+          <div className="relative">
+            <div className="w-32 h-32 rounded-full border-8 border-gray-200 flex items-center justify-center">
+              <span className="text-gray-400 text-lg font-bold">--%</span>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+      
+      <CardFooter className="flex-col gap-2 text-sm">
+        <div className="flex items-center gap-2 leading-none font-medium text-gray-500">
+          Aguardando dados para cálculo
+        </div>
+        <div className="text-muted-foreground leading-none text-center">
+          {footerText || "Indicadores necessários para conformidade não disponíveis"}
+        </div>
       </CardFooter>
     </Card>
   );
