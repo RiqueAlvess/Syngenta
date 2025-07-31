@@ -1,18 +1,19 @@
 "use client";
 
-import { FlaskConical } from "lucide-react";
+import { FlaskConical, X } from "lucide-react";
 import { Watermark } from "@/components/ui/watermark";
-
-const analisesData = [
-  { label: "Solicitadas", value: "45", color: "text-gray-700" },
-  { label: "Concluídas", value: "38", color: "text-green-600" },
-  { label: "Em Andamento", value: "5", color: "text-blue-600" },
-];
 
 export function AnalisesProdutos() {
   return (
     <div className="bg-white rounded-xl border shadow-sm relative overflow-hidden">
       <Watermark />
+      
+      {/* X Vermelho para indicar falta de dados */}
+      <div className="absolute top-4 right-4 z-20">
+        <div className="bg-red-100 rounded-full p-2">
+          <X className="h-6 w-6 text-red-600" />
+        </div>
+      </div>
       
       <div className="relative z-10 flex flex-col gap-6 p-6">
         {/* Header */}
@@ -26,16 +27,17 @@ export function AnalisesProdutos() {
           </p>
         </div>
 
-        {/* Content */}
-        <div className="space-y-4">
-          {analisesData.map((item) => (
-            <div key={item.label} className="flex items-center justify-between">
-              <span className="font-medium text-gray-700">{item.label}</span>
-              <span className={`text-2xl font-bold ${item.color}`}>
-                {item.value}
-              </span>
-            </div>
-          ))}
+        {/* Content - Sem dados */}
+        <div className="flex flex-col items-center justify-center py-8 text-center">
+          <div className="bg-gray-100 rounded-full p-4 mb-4">
+            <FlaskConical className="h-8 w-8 text-gray-400" />
+          </div>
+          <h4 className="text-lg font-medium text-gray-900 mb-2">
+            Dados não disponíveis
+          </h4>
+          <p className="text-gray-500 text-sm">
+            Nenhum dado de análises de produtos químicos foi fornecido para este período.
+          </p>
         </div>
       </div>
     </div>
