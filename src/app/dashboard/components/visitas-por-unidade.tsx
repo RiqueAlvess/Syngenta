@@ -3,11 +3,11 @@
 import { Building2 } from "lucide-react";
 import { Watermark } from "@/components/ui/watermark";
 
+// DADOS REAIS - Visitas por unidade/localidade
 const visitasData = [
-  { unidade: "SYNGENTA CROP", realizadas: 45, pendentes: 3 },
-  { unidade: "SYNGENTA SEEDS-R&D", realizadas: 38, pendentes: 5 },
-  { unidade: "SYNGENTA SEEDS", realizadas: 32, pendentes: 2 },
-  { unidade: "SYNGENTA DIGITAL", realizadas: 27, pendentes: 4 },
+  { unidade: "HOLAMBRA", realizadas: 4, pendentes: 0 },
+  { unidade: "INDAIATUBA", realizadas: 3, pendentes: 1 },
+  { unidade: "ESCRITÓRIO CENTRAL", realizadas: 1, pendentes: 0 },
 ];
 
 export function VisitasPorUnidade() {
@@ -33,17 +33,19 @@ export function VisitasPorUnidade() {
           </div>
           <p className="text-muted-foreground text-sm">
             Distribuição de visitas realizadas e pendentes - Total:{" "}
-            {totalRealizadas} realizadas, {totalPendentes} pendentes
+            {totalRealizadas} realizadas
+            {totalPendentes > 0 && `, ${totalPendentes} pendentes`}
           </p>
         </div>
 
         {/* Content */}
         <div className="space-y-4">
           {visitasData.map((item) => {
-            const percentualExecucao = (
-              (item.realizadas / (item.realizadas + item.pendentes)) *
-              100
-            ).toFixed(1);
+            const totalUnidade = item.realizadas + item.pendentes;
+            const percentualExecucao = totalUnidade > 0 ? (
+              (item.realizadas / totalUnidade) * 100
+            ).toFixed(1) : "100.0";
+            
             return (
               <div key={item.unidade} className="space-y-2">
                 <div className="flex items-center justify-between">
@@ -55,14 +57,23 @@ export function VisitasPorUnidade() {
                     <span className="text-muted-foreground">
                       {item.realizadas} realizadas
                     </span>
-                    <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">
-                      {item.pendentes} pendentes
-                    </span>
+                    {item.pendentes > 0 && (
+                      <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">
+                        {item.pendentes} pendentes
+                      </span>
+                    )}
+                    {item.pendentes === 0 && (
+                      <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">
+                        Concluído
+                      </span>
+                    )}
                   </div>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div
-                    className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      item.pendentes === 0 ? 'bg-green-600' : 'bg-blue-600'
+                    }`}
                     style={{ width: `${percentualExecucao}%` }}
                   ></div>
                 </div>
@@ -73,6 +84,25 @@ export function VisitasPorUnidade() {
             );
           })}
         </div>
+
+        {/* Resumo adicional */}
+        {totalRealizadas > 0 && (
+          <div className="mt-4 p-3 bg-green-50 rounded-lg border border-green-200">
+            <div className="text-center">
+              <div className="text-lg font-bold text-green-700">
+                {totalRealizadas}
+              </div>
+              <div className="text-sm text-green-600">
+                Total de visitas realizadas no período
+              </div>
+              {totalPendentes === 0 && (
+                <div className="text-xs text-green-500 mt-1">
+                  ✓ Todas as visitas foram concluídas
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
