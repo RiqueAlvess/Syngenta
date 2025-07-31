@@ -1,7 +1,6 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import { BarChart3, X } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -10,12 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
 
 interface ChartAreaGradientProps {
   title: string;
@@ -36,81 +29,50 @@ export function ChartAreaGradient({
   footerText,
   metaText,
 }: ChartAreaGradientProps) {
-  const chartConfig = dataKeys.reduce((acc, key, index) => {
-    acc[key] = {
-      label: key.charAt(0).toUpperCase() + key.slice(1),
-      color: colors[index] || "#3b82f6",
-    };
-    return acc;
-  }, {} as ChartConfig);
-
   return (
     <Card>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
+      
+      {/* X Vermelho para indicar falta de dados */}
+      <div className="absolute top-4 right-4 z-20">
+        <div className="bg-red-100 rounded-full p-2">
+          <X className="h-6 w-6 text-red-600" />
+        </div>
+      </div>
+
       <CardContent>
-        <ChartContainer config={chartConfig}>
-          <AreaChart
-            accessibilityLayer
-            data={data}
-            margin={{ left: 12, right: 12 }}
-          >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="mes"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-            />
-            <YAxis tickLine={false} axisLine={false} tickMargin={8} />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-            <defs>
-              {dataKeys.map((key, index) => (
-                <linearGradient
-                  key={key}
-                  id={`fill${key}`}
-                  x1="0"
-                  y1="0"
-                  x2="0"
-                  y2="1"
-                >
-                  <stop
-                    offset="5%"
-                    stopColor={colors[index]}
-                    stopOpacity={0.8}
-                  />
-                  <stop
-                    offset="95%"
-                    stopColor={colors[index]}
-                    stopOpacity={0.1}
-                  />
-                </linearGradient>
-              ))}
-            </defs>
-            {dataKeys.map((key, index) => (
-              <Area
-                key={key}
-                dataKey={key}
-                type="natural"
-                fill={`url(#fill${key})`}
-                fillOpacity={0.4}
-                stroke={colors[index]}
-                stackId="a"
-              />
-            ))}
-          </AreaChart>
-        </ChartContainer>
+        {/* Indicador de sem dados */}
+        <div className="flex flex-col items-center justify-center py-12 text-center">
+          <div className="bg-gray-100 rounded-full p-4 mb-4">
+            <BarChart3 className="h-8 w-8 text-gray-400" />
+          </div>
+          <h4 className="text-lg font-medium text-gray-900 mb-2">
+            Dados não disponíveis
+          </h4>
+          <p className="text-gray-500 text-sm mb-4">
+            Nenhum dado de avaliações ambientais foi fornecido para este período.
+          </p>
+          
+          {/* Placeholder visual */}
+          <div className="w-full max-w-md">
+            <div className="bg-gray-100 rounded-lg h-40 flex items-center justify-center">
+              <span className="text-gray-400 text-sm">Gráfico indisponível</span>
+            </div>
+          </div>
+        </div>
       </CardContent>
+      
       <CardFooter>
         <div className="flex w-full items-start gap-2 text-sm">
           <div className="grid gap-2">
-            <div className="flex items-center gap-2 leading-none font-medium">
-              {footerText} <TrendingUp className="h-4 w-4" />
+            <div className="flex items-center gap-2 leading-none font-medium text-gray-500">
+              Aguardando dados de avaliações ambientais
             </div>
             <div className="text-muted-foreground flex items-center gap-2 leading-none">
-              {metaText}
+              {metaText || "Dados de programado vs executado não disponíveis"}
             </div>
           </div>
         </div>
