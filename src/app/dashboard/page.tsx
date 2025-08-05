@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { DashboardHeader } from "./components/dashboard-header";
 import { KpiCard } from "./components/kpi-card";
 import { ChartLineVisitas } from "./components/chart-line";
@@ -16,6 +15,7 @@ import { ResumoConsultas } from "./components/resumo-consultas";
 import { ExamesAlterados } from "./components/exames-alterados";
 import { AbsenteismoCard } from "./components/absenteismo-card";
 import { MedicoesCard } from "./components/medicoes-card";
+import { useDashboardData } from "@/hooks/useDashboardData";
 import {
   Users,
   FileText,
@@ -28,9 +28,16 @@ import {
 } from "lucide-react";
 
 export default function DashboardPage() {
-  const [subgrupo, setSubgrupo] = useState("todos");
-  const [unidade, setUnidade] = useState("todas");
-  const [periodo, setPeriodo] = useState("30");
+  const {
+    data,
+    selectedCategory,
+    selectedPeriod,
+    selectedCompany,
+    setSelectedCategory,
+    setSelectedPeriod,
+    setSelectedCompany,
+    availableCompanies,
+  } = useDashboardData();
 
   // Dados para reutilização - Conformidade
   const conformidadeData = [
@@ -75,32 +82,38 @@ export default function DashboardPage() {
         {/* KPIs Segurança - DADOS REAIS */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <KpiCard
-            title="Visitas Realizadas"
-            value="7"
+            title="Consultas Técnicas"
+            value={data.kpis.seguranca.consultas_tecnicas.value}
             subtitle="Período atual"
-            icon={Users}
-            iconColor="text-emerald-600"
+            icon={Phone}
+            status={data.kpis.seguranca.consultas_tecnicas.status as any}
+            target={data.kpis.seguranca.consultas_tecnicas.target}
+            unit={data.kpis.seguranca.consultas_tecnicas.unit}
           />
           <KpiCard
             title="Documentos Válidos"
-            value="10"
+            value={data.kpis.seguranca.documentos_validos.value}
             subtitle="6 vencidos"
             icon={FileText}
-            iconColor="text-yellow-500"
+            status={data.kpis.seguranca.documentos_validos.status as any}
+            target={data.kpis.seguranca.documentos_validos.target}
+            unit={data.kpis.seguranca.documentos_validos.unit}
           />
           <KpiCard
-            title="PPP Emitidos"
-            value="Sem dados"
-            subtitle="Aguardando informações"
+            title="Conformidade Geral"
+            value={data.kpis.seguranca.conformidade_geral.value}
+            subtitle="Taxa de conformidade"
             icon={Shield}
-            iconColor="text-gray-400"
+            status={data.kpis.seguranca.conformidade_geral.status as any}
+            target={data.kpis.seguranca.conformidade_geral.target}
+            unit={data.kpis.seguranca.conformidade_geral.unit}
           />
           <KpiCard
             title="Medições Realizadas"
             value="Sem dados"
             subtitle="Aguardando informações"
             icon={BarChart3}
-            iconColor="text-gray-400"
+            status="warning"
           />
         </div>
       </div>
@@ -116,31 +129,39 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <KpiCard
             title="ASO Válidos"
-            value="4,521"
+            value={data.kpis.saude.aso_validos.value}
             subtitle="674 vencendo, 1,273 vencidos"
             icon={UserCheck}
-            iconColor="text-green-600"
+            status={data.kpis.saude.aso_validos.status as any}
+            target={data.kpis.saude.aso_validos.target}
+            unit={data.kpis.saude.aso_validos.unit}
           />
           <KpiCard
             title="Exames Alterados"
-            value="3,122"
+            value={data.kpis.saude.exames_alterados.value}
             subtitle="Total de exames com alteração"
             icon={Activity}
-            iconColor="text-orange-600"
+            status={data.kpis.saude.exames_alterados.status as any}
+            target={data.kpis.saude.exames_alterados.target}
+            unit={data.kpis.saude.exames_alterados.unit}
           />
           <KpiCard
             title="Taxa Absenteísmo"
-            value="6.50%"
+            value={data.kpis.saude.taxa_absenteismo.value}
             subtitle="Taxa atual"
             icon={Calendar}
-            iconColor="text-orange-600"
+            status={data.kpis.saude.taxa_absenteismo.status as any}
+            target={data.kpis.saude.taxa_absenteismo.target}
+            unit={data.kpis.saude.taxa_absenteismo.unit}
           />
           <KpiCard
-            title="Consultas Técnicas"
-            value="7"
+            title="Visitas Realizadas"
+            value={data.kpis.saude.visitas_realizadas.value}
             subtitle="Período atual"
-            icon={Phone}
-            iconColor="text-blue-600"
+            icon={Users}
+            status={data.kpis.saude.visitas_realizadas.status as any}
+            target={data.kpis.saude.visitas_realizadas.target}
+            unit={data.kpis.saude.visitas_realizadas.unit}
           />
         </div>
       </div>
@@ -228,32 +249,38 @@ export default function DashboardPage() {
       {/* Cards principais - Segurança (4 KPIs) - DADOS REAIS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 py-6">
         <KpiCard
-          title="Visitas Realizadas"
-          value="7"
+          title="Consultas Técnicas"
+          value={data.kpis.seguranca.consultas_tecnicas.value}
           subtitle="Período atual"
-          icon={Users}
-          iconColor="text-emerald-600"
+          icon={Phone}
+          status={data.kpis.seguranca.consultas_tecnicas.status as any}
+          target={data.kpis.seguranca.consultas_tecnicas.target}
+          unit={data.kpis.seguranca.consultas_tecnicas.unit}
         />
         <KpiCard
           title="Documentos Válidos"
-          value="10"
+          value={data.kpis.seguranca.documentos_validos.value}
           subtitle="6 vencidos"
           icon={FileText}
-          iconColor="text-yellow-500"
+          status={data.kpis.seguranca.documentos_validos.status as any}
+          target={data.kpis.seguranca.documentos_validos.target}
+          unit={data.kpis.seguranca.documentos_validos.unit}
         />
         <KpiCard
-          title="PPP Emitidos"
-          value="Sem dados"
-          subtitle="Aguardando informações"
+          title="Conformidade Geral"
+          value={data.kpis.seguranca.conformidade_geral.value}
+          subtitle="Taxa de conformidade"
           icon={Shield}
-          iconColor="text-gray-400"
+          status={data.kpis.seguranca.conformidade_geral.status as any}
+          target={data.kpis.seguranca.conformidade_geral.target}
+          unit={data.kpis.seguranca.conformidade_geral.unit}
         />
         <KpiCard
           title="Medições Realizadas"
           value="Sem dados"
           subtitle="Aguardando informações"
           icon={BarChart3}
-          iconColor="text-gray-400"
+          status="warning"
         />
       </div>
 
@@ -316,31 +343,39 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 py-6">
         <KpiCard
           title="ASO Válidos"
-          value="4,521"
+          value={data.kpis.saude.aso_validos.value}
           subtitle="674 vencendo, 1,273 vencidos"
           icon={UserCheck}
-          iconColor="text-green-600"
+          status={data.kpis.saude.aso_validos.status as any}
+          target={data.kpis.saude.aso_validos.target}
+          unit={data.kpis.saude.aso_validos.unit}
         />
         <KpiCard
           title="Exames Alterados"
-          value="3,122"
+          value={data.kpis.saude.exames_alterados.value}
           subtitle="Total de exames com alteração"
           icon={Activity}
-          iconColor="text-orange-600"
+          status={data.kpis.saude.exames_alterados.status as any}
+          target={data.kpis.saude.exames_alterados.target}
+          unit={data.kpis.saude.exames_alterados.unit}
         />
         <KpiCard
           title="Taxa Absenteísmo"
-          value="6.50%"
+          value={data.kpis.saude.taxa_absenteismo.value}
           subtitle="Taxa atual"
           icon={Calendar}
-          iconColor="text-orange-600"
+          status={data.kpis.saude.taxa_absenteismo.status as any}
+          target={data.kpis.saude.taxa_absenteismo.target}
+          unit={data.kpis.saude.taxa_absenteismo.unit}
         />
         <KpiCard
-          title="Consultas Técnicas"
-          value="7"
+          title="Visitas Realizadas"
+          value={data.kpis.saude.visitas_realizadas.value}
           subtitle="Período atual"
-          icon={Phone}
-          iconColor="text-blue-600"
+          icon={Users}
+          status={data.kpis.saude.visitas_realizadas.status as any}
+          target={data.kpis.saude.visitas_realizadas.target}
+          unit={data.kpis.saude.visitas_realizadas.unit}
         />
       </div>
 
@@ -382,7 +417,7 @@ export default function DashboardPage() {
   );
 
   const renderContent = () => {
-    switch (subgrupo) {
+    switch (selectedCategory) {
       case "seguranca":
         return renderSegurancaContent();
       case "saude":
@@ -395,9 +430,13 @@ export default function DashboardPage() {
   return (
     <>
       <DashboardHeader
-        onSubgrupoChange={setSubgrupo}
-        onUnidadeChange={setUnidade}
-        onPeriodoChange={setPeriodo}
+        selectedCategory={selectedCategory}
+        selectedPeriod={selectedPeriod}
+        selectedCompany={selectedCompany}
+        availableCompanies={availableCompanies}
+        onCategoryChange={setSelectedCategory}
+        onPeriodChange={setSelectedPeriod}
+        onCompanyChange={setSelectedCompany}
       />
 
       {renderContent()}
