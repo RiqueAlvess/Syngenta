@@ -30,9 +30,7 @@ export function DashboardHeader({
   return (
     <div className="bg-white rounded-xl px-6 py-4 shadow-sm border border-gray-100">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        {/* Esquerda: Logo + título e data */}
         <div className="flex items-center gap-6">
-          {/* Logo da Syngenta */}
           <div className="flex-shrink-0">
             <img
               src="https://www.syngenta.com/themes/custom/themekit/logo.svg"
@@ -40,8 +38,6 @@ export function DashboardHeader({
               className="h-12 w-auto object-contain"
             />
           </div>
-          
-          {/* Título e Data */}
           <div>
             <h2 className="text-2xl font-bold leading-tight text-gray-900">
               Dashboard Gerencial
@@ -52,7 +48,6 @@ export function DashboardHeader({
           </div>
         </div>
 
-        {/* Direita: filtros */}
         <div className="flex items-center gap-2">
           <Select value={selectedCategory} onValueChange={onCategoryChange}>
             <SelectTrigger className="w-[160px]">
