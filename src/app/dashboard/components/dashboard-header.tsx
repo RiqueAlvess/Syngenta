@@ -9,15 +9,23 @@ import {
 } from "@/components/ui/select";
 
 interface DashboardHeaderProps {
-  onSubgrupoChange: (subgrupo: string) => void;
-  onUnidadeChange: (unidade: string) => void;
-  onPeriodoChange: (periodo: string) => void;
+  selectedCategory: 'todos' | 'seguranca' | 'saude';
+  selectedPeriod: '30' | '60' | '90';
+  selectedCompany: string;
+  availableCompanies: Array<{ code: number; name: string }>;
+  onCategoryChange: (category: 'todos' | 'seguranca' | 'saude') => void;
+  onPeriodChange: (period: '30' | '60' | '90') => void;
+  onCompanyChange: (company: string) => void;
 }
 
 export function DashboardHeader({
-  onSubgrupoChange,
-  onUnidadeChange,
-  onPeriodoChange,
+  selectedCategory,
+  selectedPeriod,
+  selectedCompany,
+  availableCompanies,
+  onCategoryChange,
+  onPeriodChange,
+  onCompanyChange,
 }: DashboardHeaderProps) {
   return (
     <div className="bg-white rounded-xl px-6 py-4 shadow-sm border border-gray-100">
@@ -39,16 +47,16 @@ export function DashboardHeader({
               Dashboard Gerencial
             </h2>
             <p className="text-sm text-muted-foreground">
-              Última atualização: 03/07/2025, 22:17:12
+              Última atualização: 05/08/2025, 02:04:26
             </p>
           </div>
         </div>
 
         {/* Direita: filtros */}
         <div className="flex items-center gap-2">
-          <Select defaultValue="todos" onValueChange={onSubgrupoChange}>
+          <Select value={selectedCategory} onValueChange={onCategoryChange}>
             <SelectTrigger className="w-[160px]">
-              <SelectValue placeholder="Subgrupo" />
+              <SelectValue placeholder="Categoria" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="todos">Todos</SelectItem>
@@ -57,27 +65,28 @@ export function DashboardHeader({
             </SelectContent>
           </Select>
 
-          <Select defaultValue="30" onValueChange={onPeriodoChange}>
+          <Select value={selectedPeriod} onValueChange={onPeriodChange}>
             <SelectTrigger className="w-[140px]">
               <SelectValue placeholder="Período" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="7">7 dias</SelectItem>
               <SelectItem value="30">30 dias</SelectItem>
+              <SelectItem value="60">60 dias</SelectItem>
               <SelectItem value="90">90 dias</SelectItem>
             </SelectContent>
           </Select>
 
-          <Select defaultValue="todas" onValueChange={onUnidadeChange}>
-            <SelectTrigger className="w-[200px]">
-              <SelectValue placeholder="Unidade" />
+          <Select value={selectedCompany} onValueChange={onCompanyChange}>
+            <SelectTrigger className="w-[280px]">
+              <SelectValue placeholder="Empresa" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="todas">Todas as unidades</SelectItem>
-              <SelectItem value="crop">SYNGENTA CROP</SelectItem>
-              <SelectItem value="seeds-rd">SYNGENTA SEEDS-R&D</SelectItem>
-              <SelectItem value="seeds">SYNGENTA SEEDS</SelectItem>
-              <SelectItem value="digital">SYNGENTA DIGITAL</SelectItem>
+              <SelectItem value="todas">Todas as empresas</SelectItem>
+              {availableCompanies.map((company) => (
+                <SelectItem key={company.code} value={company.code.toString()}>
+                  {company.name}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
